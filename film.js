@@ -104,3 +104,6 @@ const filmy = [
 		premiera: '2022-12-24',
 	},
 ]
+
+
+const filmPrehratEl = window.location.hash.slice(1)
