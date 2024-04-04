@@ -103,7 +103,49 @@ const filmy = [
 			'Na zámek v podhůří Krkonoš přijíždí jeho nový majitel Štěpán se svojí snoubenkou, krásnou komtesou Blankou, a mladším bratrem Adamem. Cestou kočár nešťastně srazí kolemjdoucí dívku, Adam jí pomůže a ona se do něj zamiluje. Na zámku Adam objeví starou vlašskou knihu, která by měla obsahovat cestu k pokladům. Tajemné značky vlašské knihy však nedokáže vyluštit ani národopisec Jiráček, který v kraji sbírá pověsti a nevychází z údivu nad tím, že zdejší lidé stále věří v Krakonoše. Na zámku se objeví záhadný cizinec a nabídne Štěpánovi, že jej k pokladu za určitých podmínek dovede. Výprava do hor může začít. Naplní se Liduščina láska k Adamovi? Jakou záhadu skrývá starý obraz na zámku Hůrka a co strašlivého se v horách kdysi odehrálo? A kdo je vlastně Krakonoš a jaké je jeho největší tajemství? (csfd.cz, Česká televize)',
 		premiera: '2022-12-24',
 	},
+	{
+		id: 'cesta-do-fantazie',
+		nazev: 'Cesta do fantazie',
+		plakat: {
+			url: 'https://m.media-amazon.com/images/M/MV5BMjlmZmI5MDctNDE2YS00YWE0LWE5ZWItZDBhYWQ0NTcxNWRhXkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_.jpg',
+			sirka: 420,
+			vyska: 592,
+		},
+		ochutnavka: 'Japonské anime z dílny Hajao Mijazaki',
+		popis:
+			'Dobrodružný fantasy snímek, kde se nesvádějí bitvy, hlavní postava není nadaná nadpřirozenými schopnostmi, ani se zde nesváří dobro se zlem.',
+		premiera: '2001-07-20',
+	},
 ]
 
+let filmPrehratID = window.location.hash.slice(1)
+let filmPrehrat = filmy.find((film) => film.id === filmPrehratID)
 
-const filmPrehratEl = window.location.hash.slice(1)
+let plakat = document.querySelector("img")
+plakat.src = `${filmPrehrat.plakat.url}`
+
+let titulek = document.querySelector(".card-title")
+titulek.innerHTML = `${filmPrehrat.nazev}`
+
+let popis = document.querySelector(".card-text")
+popis.innerHTML = `${filmPrehrat.popis}`
+
+let premiera = document.querySelector("#premiera")
+premiera.innerHTML = `Premiéra <strong>${filmPrehrat.premiera}</strong>, což je za 24
+dní.`
+
+const poznamka = document.querySelector("#note-form")
+poznamka.addEventListener("submit", (event) => {
+	event.preventDefault()
+	const poznamkaInput = document.querySelector("#message-input")
+	if (!poznamkaInput.value) {
+		poznamkaInput.classList.add("is-invalid")
+		poznamkaInput.focus()
+	} else {
+		const souhlas = document.querySelector("#terms-checkbox")
+		if (!souhlas.checked) {
+		souhlas.classList.add("is-invalid")
+		} else
+		poznamka.innerHTML = `<p class="card-text">${poznamkaInput.value}</p>`
+	}
+	})
