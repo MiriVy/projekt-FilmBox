@@ -118,6 +118,8 @@ const filmy = [
 	},
 ]
 
+//Ukol 4
+
 const seznamEl = document.querySelector("#seznam-filmu")
 seznamEl.innerHTML = ""
 

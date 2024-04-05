@@ -62,7 +62,7 @@ const filmy = [
 		ochutnavka: 'Česká komedie.',
 		popis:
 			'Paní Zahrádková (Tereza Voříšková) s manželem (Vojta Kotek) idealisticky chtějí, aby společnými silami dům zachránili. Novomanželé Bernáškovi (Jiří Černý, Maria Sawa) se s nadšením připojují. Paní Roubíčková (Klára Melíšková) pedantsky kontroluje řádný průběh schůze. Paní Horvátová (Dagmar Havlová) všechno iniciativně komentuje. Naivní pan Švec (David Novotný) zastupuje svojí maminku. Paní Procházková (Pavla Tomicová) s panem Novákem (Ondřej Malý) hledá způsoby jak zhodnotit svůj majetek. Pan Nitranský (Andrej Polák) touží po půdě v domě a pan Kubát (Jiří Lábus) důsledně sabotuje jakékoliv rozhodnutí. A v pozadí číhají bratři Čermákovi (Kryštof Hádek, Stanislav Majer), jen starý pan profesor Sokol (Ladislav Trojan) zatím nic nekomentuje… (csfd.cz, CinemArt)',
-		premiera: '2019-11-19',
+		premiera: '2039-11-19',
 	},
 	{
 		id: 'kimi',
@@ -118,6 +118,8 @@ const filmy = [
 	},
 ]
 
+//Ukol 5
+
 let filmPrehratID = window.location.hash.slice(1)
 let filmPrehrat = filmy.find((film) => film.id === filmPrehratID)
 
@@ -130,9 +132,7 @@ titulek.innerHTML = `${filmPrehrat.nazev}`
 let popis = document.querySelector(".card-text")
 popis.innerHTML = `${filmPrehrat.popis}`
 
-let premiera = document.querySelector("#premiera")
-premiera.innerHTML = `Premiéra <strong>${filmPrehrat.premiera}</strong>, což je za 24
-dní.`
+//Ukol 8
 
 const poznamka = document.querySelector("#note-form")
 poznamka.addEventListener("submit", (event) => {
@@ -149,3 +149,74 @@ poznamka.addEventListener("submit", (event) => {
 		poznamka.innerHTML = `<p class="card-text">${poznamkaInput.value}</p>`
 	}
 	})
+
+//Ukol 6
+let premiera = document.querySelector("#premiera")
+let dnyPremiery = dayjs(filmPrehrat.premiera).diff(dayjs(), 'days')
+if (dnyPremiery > 0) {
+	premiera.innerHTML = "Premiéra " + dayjs(filmPrehrat.premiera).format('D. M. YYYY') + ", což je za " + dnyPremiery + " dní."
+	}
+else if (dnyPremiery === 0) {
+	premiera.innerHTML = "Premiéra " + dayjs(filmPrehrat.premiera).format('D. M. YYYY') + ", což je dnes."
+	}
+else {
+	premiera.innerHTML = "Premiéra " + dayjs(filmPrehrat.premiera).format('D. M. YYYY') + ", což bylo před " + Math.abs(dnyPremiery) + " dny."
+	}
+
+
+//Ukol 7
+const hvezdicky = document.querySelectorAll(".fa-star")
+const zvyrazneniHvezdicek = (pocetHvez) => {
+	hvezdicky.forEach((hvezda, index) => {
+		if (index < pocetHvez) {
+            hvezda.classList.remove("far")
+            hvezda.classList.add("fas")
+        } else {
+			hvezda.classList.add("far")
+            hvezda.classList.remove("fas")
+        }
+	})
+	}
+
+hvezdicky.forEach(hvezda => {
+	hvezda.addEventListener("click", (event) => {
+	let hvezdaIndex = parseInt(event.target.textContent)
+	zvyrazneniHvezdicek(hvezdaIndex)
+	})
+})
+
+hvezdicky.forEach(hvezda => {
+	hvezda.addEventListener("mouseenter", (event) => {
+	let hvezdaIndex = parseInt(event.target.textContent)
+	zvyrazneniHvezdicek(hvezdaIndex)
+	})
+})
+
+//Ukol 9
+document.addEventListener("DOMContentLoaded", () => {
+    const prehravac = document.querySelector("#prehravac")
+	const play = document.querySelector(".play")
+	const video = document.querySelector("video")
+	const pause = document.querySelector(".pause")
+	const cas = document.querySelector(".current-time")
+
+	if (prehravac) {
+	play.addEventListener("click", () => {
+		video.play()
+	})
+	pause.addEventListener("click", () => {
+		video.pause()
+		prehravac.classList.remove("playing")
+	})
+	video.addEventListener("playing", () => {
+		prehravac.classList.add("playing")
+	})
+	video.addEventListener("timeupdate", () => {
+		const prehravanyCas = video.prehravanyCas
+		console.log(prehravanyCas)
+		const minuty = Math.floor(prehravanyCas / 60)
+		const sekundy = Math.floor(prehravanyCas % 60)
+		const upravenyCas = `${minuty}:${sekundy}`
+        cas.textContent = upravenyCas
+	})
+	}})
